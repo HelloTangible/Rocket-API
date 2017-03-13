@@ -1,0 +1,38 @@
+{
+  "name": "rocket-api",
+  "version": "0.0.1",
+  "description": "API project for Project Rocket",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HelloTangible/Rocket-API.git"
+  },
+  "keywords": [
+    "iot",
+    "testing",
+    "simulation"
+  ],
+  "author": "Brandon Satrom <brandon@hellotangible.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/HelloTangible/Rocket-API/issues"
+  },
+  "homepage": "https://github.com/HelloTangible/Rocket-API#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "boom": "^4.2.0",
+    "glob": "^7.1.1",
+    "good": "^7.1.0",
+    "good-console": "^6.4.0",
+    "good-file": "^6.0.1",
+    "good-squeeze": "^5.0.1",
+    "hapi": "^16.1.0",
+    "hapi-auth-jwt": "^4.0.0",
+    "joi-objectid": "^2.0.0",
+    "mongoose": "^4.8.6"
+  }
+}
