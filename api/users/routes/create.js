@@ -1,48 +1,31 @@
-const bcrypt = require('bcryptjs')
 const Boom = require('boom')
 const User = require('../model/User')
 const createUserSchema = require('../schemas/createUser')
-const { verifyUniqueUser } = require('../util/userFunctions')
 const createToken = require('../util/token')
-
-function hashPassword(password, cb) {
-  // Generate a salt at level 10 strength
-  bcrypt.genSalt(10, (err, salt) => {
-    bcrypt.hash(password, salt, (err, hash) => {
-      return cb(err, hash)
-    })
-  })
-}
 
 module.exports = {
   method: 'POST',
   path: '/api/users',
   config: {
+    cors: {
+      origin: ['*'],
+      additionalHeaders: ['cache-control', 'x-requested-with']
+    },
     auth: false,
-    // Before the route handler runs, verify that the user is unique
-    pre: [
-      { method: verifyUniqueUser }
-    ],
     handler: (req, res) => {
+      let user = new User()
+      user.user_id = req.payload.user_id
+      user.email = req.payload.email
+      user.email_verified = req.payload.email_verified
+      user.picture = req.payload.picture
+      user.name = req.payload.name
+      user.admin = false
 
-      let user = new User();
-      user.email = req.payload.email;
-      user.username = req.payload.username;
-      user.admin = false;
-      hashPassword(req.payload.password, (err, hash) => {
-        if (err) {
-          throw Boom.badRequest(err);
-        }
-        user.password = hash;
-        user.save((err, user) => {
-          if (err) {
-            throw Boom.badRequest(err);
-          }
-          // If the user is saved successfully, issue a JWT
-          res({ id_token: createToken(user) }).code(201);
-        });
-      });
+      User.create(user, (err, user) => {
+        if (err) return res(Boom.badImplementation(err))
 
+        res({ id_token: createToken(user) }).code(201)
+      })
     },
     // Validate the payload against the Joi schema
     validate: {

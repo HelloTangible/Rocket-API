@@ -6,7 +6,7 @@ const Glob = require('glob')
 const Globals = require('./config/globals')
 const Db = require('./data/db')
 
-var routes = require('./config/routes')
+// var routes = require('./config/routes')
 var goodConfig = require('./config/good-config.js')
 
 const server = new Hapi.Server()
@@ -17,7 +17,6 @@ server.register([require('hapi-auth-jwt'), {
   register: require('good'),
   options: goodConfig
 }], (err) => {
-
   if (err) {
     throw err
   }
@@ -27,7 +26,7 @@ server.register([require('hapi-auth-jwt'), {
     verifyOptions: {
       algorithms: [ 'HS256' ]
     }
-  });
+  })
 
   Glob.sync('api/**/routes/*.js', {
     root: __dirname

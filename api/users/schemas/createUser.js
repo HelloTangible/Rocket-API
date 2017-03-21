@@ -1,9 +1,12 @@
 const Joi = require('joi')
 
 const createUserSchema = Joi.object({
-  username: Joi.string().alphanum().min(2).max(30).required(),
-  email: Joi.string().email().required(),
-  password: Joi.string().required()
+  email: Joi.string().email(),
+  email_verified: Joi.bool(),
+  picture: Joi.string(),
+  name: Joi.string(),
+  user_id: Joi.string(),
+  admin: Joi.bool()
 })
 
 module.exports = createUserSchema

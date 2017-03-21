@@ -3,28 +3,31 @@ const Boom = require('boom')
 
 module.exports = {
   method: 'GET',
-  path: '/api/users',
+  path: '/api/users/{id}',
   config: {
+    cors: {
+      origin: ['*'],
+      additionalHeaders: ['cache-control', 'x-requested-with']
+    },
     handler: (req, res) => {
       User
-        .find()
-        // Deselect the password and version fields
-        .select('-password -__v')
+        .find({ user_id: req.params.id })
+        .select('-__v')
         .exec((err, users) => {
           if (err) {
-            throw Boom.badRequest(err);
+            throw Boom.badRequest(err)
           }
           if (!users.length) {
-            throw Boom.notFound('No users found!');
+            throw Boom.notFound('No users found!')
           }
-          res(users);
+          res(users)
         })
-    },
+    }
     // Add authentication to this route
     // The user must have a scope of `admin`
-    auth: {
+    /* auth: {
       strategy: 'jwt',
       scope: ['admin']
-    }
+    } */
   }
 }
